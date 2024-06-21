@@ -1,0 +1,56 @@
+function find_unique_route(tickets, start_city):
+    // Step 1: Create an empty graph as a dictionary
+    graph = {}
+
+    // Step 2: Populate the graph with tickets
+    for each ticket in tickets:
+        start, end = ticket
+        if start not in graph:
+            graph[start] = []
+        graph[start].append(end)
+
+    // Step 3: Sort the destinations for each city to ensure lexicographical order
+    for each city in graph:
+        graph[city].sort()
+
+    // Step 4: Prepare a list to hold the travel route
+    route = []
+
+    // Step 5: Define the DFS function
+    function dfs(city):
+        // While there are destinations to visit from the current city
+        while city in graph and graph[city]:
+            // Get the next city to visit
+            next_city = graph[city].pop(0) // remove and get the first element
+            // Recursively visit the next city
+            dfs(next_city)
+        // Append the city to the route as we backtrack
+        route.append(city)
+
+    // Step 6: Start the DFS from the starting city
+    dfs(start_city)
+
+    // Step 7: Reverse the route to get the correct order
+    route.reverse()
+
+    return route
+
+// Define the tickets and the starting city
+tickets = [
+    ("Paris", "Skopje"),
+    ("Zurich", "Amsterdam"),
+    ("Prague", "Zurich"),
+    ("Barcelona", "Berlin"),
+    ("Kiev", "Prague"),
+    ("Skopje", "Paris"),
+    ("Amsterdam", "Barcelona"),
+    ("Berlin", "Kiev"),
+    ("Berlin", "Amsterdam")
+]
+start_city = "Kiev"
+
+// Find the unique travel route
+travel_route = find_unique_route(tickets, start_city)
+
+// Output the travel route
+print("Travel Route:", travel_route)
